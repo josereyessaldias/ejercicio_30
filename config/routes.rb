@@ -5,6 +5,8 @@ Rails.application.routes.draw do
       }
 
   get 'users/:id', to: 'histories#index_id', as: 'user'
+  get 'users', to: 'histories#index_users'
+  patch 'admin_update/:id', to: 'histories#admin_update', as: 'admin_update'
   resources :histories
 
   root "histories#index"

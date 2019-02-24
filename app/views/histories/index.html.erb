@@ -14,10 +14,10 @@
         <%= link_to(image_tag(history.picture.thumb), history) if history.picture? %>
         <div class="caption">
           <h3><%= history.title %></h3>
-          <small>El usuario <strong><%= history.user.name %></strong> creó esta historia <%= time_ago_in_words(history.created_at) %> ago</small>
+          <small>El usuario <strong><%= history.user.try(:name) %></strong> creó esta historia <%= time_ago_in_words(history.created_at) %> ago</small>
           <p><%= history.content.truncate(150)  %></p>
           <p><%= link_to 'Show', history, class: "btn btn-primary" %>
-            <% if user_signed_in? and history.user.name == current_user.try(:name) or current_user.try(:admin) == true%>
+            <% if user_signed_in? and history.user.try(:name) == current_user.try(:name) or current_user.try(:admin) == true%>
             <%= link_to 'Edit', edit_history_path(history), class: "btn btn-warning" %>
             <%= link_to 'Destroy', history, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
             <% end %>

@@ -37,6 +37,13 @@
                 <a href="<%= new_user_registration_path%>">Registrarse</a>
               <% end %>
             </li>
+            
+              <% if user_signed_in? and current_user.admin == true %>
+              <li>
+                <a href="<%= users_path %>">Administrador</a>
+              </li>
+              <% end %>
+            
           </ul>
         </li>
       </ul>

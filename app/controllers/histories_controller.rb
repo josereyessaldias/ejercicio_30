@@ -13,6 +13,19 @@ class HistoriesController < ApplicationController
     @user = current_user
   end
 
+  def index_users
+    @users = User.all
+  end
+
+  def admin_update
+    @user = User.find(params[:id])
+    @user.update(user_params)
+    redirect_to users_path
+    flash[:alert] = "Se actulizó el rol del usuario"
+
+
+  end
+
   # GET /histories/1
   # GET /histories/1.json
   def show
@@ -93,5 +106,9 @@ class HistoriesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def history_params
       params.require(:history).permit(:title, :picture, :content, :remote_picture_url)
+    end
+
+    def user_params
+      params.require(:user).permit(:admin, :id)
     end
 end

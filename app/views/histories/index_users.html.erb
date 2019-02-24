@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-xs-8 col-sm-10 col-md-10">
+    <h1>Users</h1>
+  </div>
+  
+</div>
+
+<div class="row">
+  <% @users.reverse.each do |user| %>
+    <div class="col-sm-6 col-md-4">
+      <div class="thumbnail">
+        <div class="caption">
+          <h3><%= user.name %></h3>
+          <p>Username: <%= user.username %></p>
+          <p>Email: <%= user.email %></p>
+          <small>El usuario se creó <%= time_ago_in_words(user.created_at) %> ago</small><br><br>
+
+          <%= form_with model: user, url: admin_update_path(user), method: :patch, local: true do |f| %>
+
+            <%= f.label :admin %>
+            <%= f.check_box :admin %>
+
+            <%= f.submit "Actualizar rol" %>
+          <% end %>
+
+
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+
+<br>
+
+
