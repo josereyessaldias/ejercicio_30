@@ -1,11 +1,16 @@
 class HistoriesController < ApplicationController
   before_action :set_history, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, except: [:index]
 
   # GET /histories
   # GET /histories.json
   def index
     @histories = History.all
+  end
+
+  def index_id
+    @histories = History.all
+    @user = current_user
   end
 
   # GET /histories/1
@@ -42,25 +47,41 @@ class HistoriesController < ApplicationController
   # PATCH/PUT /histories/1
   # PATCH/PUT /histories/1.json
   def update
-    respond_to do |format|
-      if @history.update(history_params)
-        format.html { redirect_to @history, notice: 'History was successfully updated.' }
-        format.json { render :show, status: :ok, location: @history }
-      else
-        format.html { render :edit }
-        format.json { render json: @history.errors, status: :unprocessable_entity }
+    if @history.user.name == current_user[:name] or current_user[:admin] == true
+  
+      respond_to do |format|
+        if @history.update(history_params)
+          format.html { redirect_to @history, notice: 'History was successfully updated.' }
+          format.json { render :show, status: :ok, location: @history }
+        else
+          format.html { render :edit }
+          format.json { render json: @history.errors, status: :unprocessable_entity }
+        end
       end
+
+    else
+      redirect_to root_path
+      flash[:alert] = "No puede editar un post que no sea suyo"
+        
+      
     end
   end
 
   # DELETE /histories/1
   # DELETE /histories/1.json
   def destroy
-    @history.destroy
-    respond_to do |format|
-      format.html { redirect_to histories_url, notice: 'History was successfully destroyed.' }
-      format.json { head :no_content }
+    if @history.user.name == current_user[:name] or current_user[:admin] == true
+
+      @history.destroy
+      respond_to do |format|
+        format.html { redirect_to histories_url, notice: 'History was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to root_path
+      flash[:alert] = "No puede borrar un post que no sea suyo"
     end
+
   end
 
   private

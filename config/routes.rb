@@ -4,6 +4,7 @@ Rails.application.routes.draw do
         registrations: 'users/registrations'
       }
 
+  get 'users/:id', to: 'histories#index_id', as: 'user'
   resources :histories
 
   root "histories#index"
